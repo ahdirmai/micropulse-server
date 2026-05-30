@@ -1,0 +1,64 @@
+# Manual Deployment Commands
+# Run these on Ubuntu server after uploading microplus-deploy.tar.gz
+
+# 1. Extract
+cd /tmp
+tar -xzf microplus-deploy.tar.gz
+
+# 2. Setup directory
+sudo mkdir -p /var/www/microplus
+sudo chown $USER:$USER /var/www/microplus
+cd /var/www/microplus
+
+# 3. Copy files
+cp -r /tmp/.next /tmp/public /tmp/package.json /tmp/package-lock.json /tmp/next.config.js ./
+
+# 4. Install deps
+npm ci --production
+
+# 5. Create env file
+cat > .env.local << 'EOF'
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_key
+NEXT_PUBLIC_WIDGET_BASE_URL=https://micropulse.ahdirmai.id
+PORT=4001
+NODE_ENV=production
+EOF
+
+# 6. Edit Supabase credentials
+nano .env.local
+
+# 7. Install PM2 (if not installed)
+sudo npm install -g pm2
+
+# 8. Create PM2 config
+cat > ecosystem.config.js << 'EOF'
+module.exports = {
+  apps: [{
+    name: 'microplus',
+    script: 'node_modules/next/dist/bin/next',
+    args: 'start',
+    env: {
+      PORT: 4001,
+      NODE_ENV: 'production'
+    },
+    instances: 1,
+    autorestart: true,
+    watch: false,
+    max_memory_restart: '500M'
+  }]
+}
+EOF
+
+# 9. Start app
+pm2 delete microplus 2>/dev/null || true
+pm2 start ecosystem.config.js
+pm2 save
+sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u $USER --hp $HOME
+
+# 10. Verify
+pm2 status
+curl http://localhost:4001
+
+# Done! Point Cloudflare subdomain micropulse.ahdirmai.id to localhost:4001

@@ -1,0 +1,25 @@
+services:
+  microplus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: microplus:latest
+    container_name: microplus
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - NEXT_PUBLIC_WIDGET_BASE_URL=https://micropulse.ahdirmai.id
+    env_file:
+      - .env.local
+    networks:
+      - microplus-net
+
+networks:
+  microplus-net:
+    driver: bridge

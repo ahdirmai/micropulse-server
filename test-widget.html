@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MicroPulse Widget Test</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #4F46E5;
+    }
+    .note {
+      background: #FFF3CD;
+      border-left: 4px solid #FFC107;
+      padding: 15px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>MicroPulse Widget Test Page</h1>
+
+  <div class="note">
+    <strong>Instructions:</strong>
+    <ol>
+      <li>Make sure your Next.js dev server is running on port 3000</li>
+      <li>Create a survey in the dashboard</li>
+      <li>Copy the survey ID from the embed page</li>
+      <li>Replace "YOUR_SURVEY_ID" in the script tag below</li>
+      <li>Open this file in your browser</li>
+    </ol>
+  </div>
+
+  <p>This is a test page to verify the MicroPulse widget works correctly.</p>
+  <p>The widget should appear as a floating button in the bottom-right corner of this page.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+  <!-- Replace YOUR_SURVEY_ID with actual survey ID -->
+<script src="http://localhost:3001/widget.js" data-survey-id="77d39725-89c8-4919-a1ec-16c02d673e53" async></script>
+</body>
+</html>
